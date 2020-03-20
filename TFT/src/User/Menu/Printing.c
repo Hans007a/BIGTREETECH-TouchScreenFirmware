@@ -34,7 +34,7 @@ const GUI_RECT printinfo_val_rect[7] = {
 };
 
 static u32 nextTime = 0;
-static u32 toggle_time = 300; // 1 seconds is 100
+static u32 toggle_time = 3000; // 1 seconds is 1000
 TOOL c_Ext = NOZZLE0;
 static int c_fan = 0;
 static int c_speedID = 0;
@@ -84,7 +84,7 @@ const ITEM itemIsPause[2] = {
 #endif
 
 static PRINTING infoPrinting;
-static u32     update_time = M27_REFRESH * 100;
+static u32     update_time = M27_REFRESH * 1000;
 
 #ifdef ONBOARD_SD_SUPPORT
 static bool    update_waiting = M27_WATCH_OTHER_SOURCES;
@@ -112,7 +112,7 @@ return infoPrinting.m0_pause;
 //
 void setPrintingTime(u32 RTtime)
 {
-  if(RTtime%100 == 0)
+  if(RTtime%1000 == 0)
   {
     if(isPrinting() && !isPause())
     {
@@ -236,7 +236,7 @@ void menuBeforePrinting(void)
 
       infoPrinting.size  = f_size(&infoPrinting.file);
       infoPrinting.cur   = infoPrinting.file.fptr;
-      if(infoSettings.send_start_gcode == 1){
+      if(infoSettings.send_start_gcode == 1 && infoPrinting.cur == 0){ // PLR continue printing, CAN NOT use start gcode
         startGcodeExecute();
       }
       break;
@@ -473,7 +473,7 @@ void reDrawLayer(int icon_pos)
 
 void toggleinfo(void)
 {
-  if (OS_GetTime() > nextTime)
+  if (OS_GetTimeMs() > nextTime)
   {
     if (EXTRUDER_NUM > 1)
     {
@@ -494,7 +494,7 @@ void toggleinfo(void)
     }
 
     c_speedID = (c_speedID + 1) % 2;
-    nextTime = OS_GetTime() + toggle_time; 
+    nextTime = OS_GetTimeMs() + toggle_time; 
     rapid_serial_loop();	 //perform backend printing loop before drawing to avoid printer idling
     reDrawSpeed(SPD_ICON_POS);
   }
@@ -709,7 +709,6 @@ void abortPrinting(void)
   
   heatClearIsWaiting();
   
-  mustStoreCmd("G0 Z%d F3000\n", limitValue(0, (int)coordinateGetAxisTarget(Z_AXIS) + 10, Z_MAX_POS));
   mustStoreCmd(CANCEL_PRINT_GCODE);
 
   endPrinting();
@@ -798,9 +797,9 @@ void getGcodeFromFile(void)
   if(isPrinting()==false || infoFile.source == BOARD_SD)  return;
   
   powerFailedCache(infoPrinting.file.fptr);
-  
-  if(heatHasWaiting() || infoCmd.count || infoPrinting.pause )  return;
-  
+
+  if(heatHasWaiting() || infoCmd.count >= 3 || infoPrinting.pause )  return;
+
   if(moveCacheToCmd() == true) return;
 
   for(;infoPrinting.cur < infoPrinting.size;)
@@ -852,12 +851,12 @@ void loopCheckPrinting(void)
 
   do
   {  /* WAIT FOR M27	*/
-    if(update_waiting == true) {nextTime=OS_GetTime()+update_time; break;}
-    if(OS_GetTime() < nextTime) break;
+    if(update_waiting == true) {nextTime=OS_GetTimeMs()+update_time; break;}
+    if(OS_GetTimeMs() < nextTime) break;
 
     if(storeCmd("M27\n")==false)               break;
 
-    nextTime=OS_GetTime()+update_time;
+    nextTime=OS_GetTimeMs()+update_time;
     update_waiting=true;
   }while(0);
 }
