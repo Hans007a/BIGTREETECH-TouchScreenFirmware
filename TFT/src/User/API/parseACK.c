@@ -12,7 +12,7 @@ const char *const ignoreEcho[] = {
   "Probe Z Offset:",
   "paused for user",
   "Printing... ch@",
-  "Active Extruder:"
+  "Active Extruder:",
   "Flow:",
   "echo:;",
   "echo:  G",
