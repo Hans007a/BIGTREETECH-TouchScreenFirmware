@@ -30,6 +30,7 @@
     #define ES_BLTOUCH_DEPLOY       "Desplegar"
     #define ES_BLTOUCH_STOW         "Plegar"
     #define ES_BLTOUCH_REPEAT       "Repetir"
+    #define ES_Z_OFFSET             "Z Offset"
     #define ES_PROBE_OFFSET         "Sonda Compensar"
     #define ES_EEPROM_SAVE          "Grabar"
     #define ES_INC                  "Aumentar"
@@ -182,5 +183,6 @@
     #define ES_120_SECONDS              "2 Min."
     #define ES_300_SECONDS              "5 Min."
     #define ES_CUSTOM_SECONDS           "Custom"
+    #define ES_ST7920_FULLSCREEN        "Marlin mode in fullscreen"
 
 #endif

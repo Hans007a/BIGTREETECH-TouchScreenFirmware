@@ -30,6 +30,7 @@
     #define AM_BLTOUCH_DEPLOY       "Deploy"
     #define AM_BLTOUCH_STOW         "Stow"
     #define AM_BLTOUCH_REPEAT       "Repeat"
+    #define AM_Z_OFFSET             "Z Offset"
     #define AM_PROBE_OFFSET         "Probe Offset"
     #define AM_EEPROM_SAVE          "Save"
     #define AM_INC                  "Ավելացնել"
@@ -182,5 +183,6 @@
     #define AM_120_SECONDS              "2 Min."
     #define AM_300_SECONDS              "5 Min."
     #define AM_CUSTOM_SECONDS           "Custom"
+    #define AM_ST7920_FULLSCREEN        "Marlin mode in fullscreen"
 
 #endif

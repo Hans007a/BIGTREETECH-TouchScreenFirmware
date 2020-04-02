@@ -19,7 +19,7 @@ const char *const ignoreEcho[] = {
   "echo:  M",
 };
 
-bool portSeen[_USART_CNT] = {false, false, false, false, false, false};
+bool portSeen[_UART_CNT] = {false, false, false, false, false, false};
 
 void setCurrentAckSrc(uint8_t src)
 {
@@ -397,7 +397,7 @@ void parseACK(void)
     else if (!ack_seen("ok"))
     {
       // make sure we pass on spontaneous messages to all connected ports (since these can come unrequested)
-      for (int port = 0; port < _USART_CNT; port++)
+      for (int port = 0; port < _UART_CNT; port++)
       {
         if (port != SERIAL_PORT && portSeen[port])
         {
@@ -416,11 +416,9 @@ void parseACK(void)
 
 void parseRcvGcode(void)
 {
-#ifdef SERIAL_PORT_2
-  uint8_t i = 0;
-  for (i = 0; i < _USART_CNT; i++)
-  {
-    if (i != SERIAL_PORT && infoHost.rx_ok[i] == true)
+  #ifdef SERIAL_PORT_2
+    uint8_t i = 0;
+    for(i = 0; i < _UART_CNT; i++)
     {
       infoHost.rx_ok[i] = false;
       syncL2CacheFromL1(i);

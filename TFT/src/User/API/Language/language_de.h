@@ -30,6 +30,7 @@
     #define DE_BLTOUCH_DEPLOY       "Ausfahren"
     #define DE_BLTOUCH_STOW         "Einfahren"
     #define DE_BLTOUCH_REPEAT       "Widerholen"
+    #define DE_Z_OFFSET             "Z Offset"
     #define DE_PROBE_OFFSET         "Probe Offset"
     #define DE_EEPROM_SAVE          "Speichern"
     #define DE_INC                  "Erhöhen"
@@ -182,5 +183,6 @@
     #define DE_120_SECONDS              "2 Min."
     #define DE_300_SECONDS              "5 Min."
     #define DE_CUSTOM_SECONDS           "Benutz."
+    #define DE_ST7920_FULLSCREEN        "Marlin mode in fullscreen"
 
 #endif

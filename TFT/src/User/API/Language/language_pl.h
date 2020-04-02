@@ -30,6 +30,7 @@
     #define PL_BLTOUCH_DEPLOY       "Wysuń"
     #define PL_BLTOUCH_STOW         "Schowaj"
     #define PL_BLTOUCH_REPEAT       "Powtórz"
+    #define PL_Z_OFFSET             "Z Offset"
     #define PL_PROBE_OFFSET         "Przesunięcie"
     #define PL_EEPROM_SAVE          "Zapisz"
     #define PL_INC                  "Więcej"
@@ -182,5 +183,6 @@
     #define PL_120_SECONDS              "2 Min."
     #define PL_300_SECONDS              "5 Min."
     #define PL_CUSTOM_SECONDS           "Custom"
+    #define PL_ST7920_FULLSCREEN        "Marlin mode in fullscreen"
 
 #endif
