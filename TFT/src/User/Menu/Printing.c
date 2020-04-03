@@ -10,7 +10,7 @@ const GUI_POINT printinfo_points[6] = {
 {START_X + PICON_LG_WIDTH*2 + PICON_SPACE_X*2, ICON_START_Y + PICON_HEIGHT*1 + PICON_SPACE_Y*1},
 };
 
-const GUI_RECT printinfo_val_rect[6] = {
+const GUI_RECT printinfo_val_rect[7] = {
   {START_X + PICON_LG_WIDTH*0 + PICON_SPACE_X*0 + PICON_VAL_X,              ICON_START_Y + PICON_HEIGHT*0 + PICON_SPACE_Y*0 + PICON_VAL_Y,
         START_X + PICON_LG_WIDTH*0 + PICON_SPACE_X*0 + PICON_VAL_LG_EX,     ICON_START_Y + PICON_HEIGHT*0 + PICON_SPACE_Y*0 + PICON_VAL_Y + BYTE_HEIGHT},
 
@@ -28,6 +28,9 @@ const GUI_RECT printinfo_val_rect[6] = {
 
   {START_X + PICON_LG_WIDTH*2 + PICON_SPACE_X*2 + PICON_VAL_X,               ICON_START_Y + PICON_HEIGHT*1 + PICON_SPACE_Y*1 + PICON_VAL_Y,
         START_X + PICON_LG_WIDTH*2 + PICON_SPACE_X*2 + PICON_VAL_SM_EX,     ICON_START_Y + PICON_HEIGHT*1 + PICON_SPACE_Y*1 + PICON_VAL_Y + BYTE_HEIGHT},
+  
+  {START_X + PICON_LG_WIDTH*0 + PICON_SPACE_X*0 + PICON_VAL_X,              ICON_START_Y + PICON_HEIGHT*1 + PICON_SPACE_Y*1 /*+ PICON_VAL_Y*/,
+        START_X + PICON_LG_WIDTH*0 + PICON_SPACE_X*0 + PICON_VAL_LG_EX,     ICON_START_Y + PICON_HEIGHT*1 + PICON_SPACE_Y*1 /*+ PICON_VAL_Y*/ + BYTE_HEIGHT},
 };
 
 static u32 nextTime = 0;
@@ -445,7 +448,8 @@ void reDrawProgress(int icon_pos)
 
   GUI_SetTextMode(GUI_TEXTMODE_TRANS);
 
-  GUI_DispString(printinfo_points[3].x + PICON_TITLE_X, printinfo_points[3].y + PICON_TITLE_Y, (u8 *)buf);
+  //GUI_DispString(printinfo_points[3].x + PICON_TITLE_X, printinfo_points[3].y + PICON_TITLE_Y, (u8 *)buf);
+  GUI_DispStringInPrect(&printinfo_val_rect[6], (u8 *)buf);
 
   GUI_SetTextMode(GUI_TEXTMODE_NORMAL);
 }
@@ -500,6 +504,7 @@ void toggleinfo(void)
 void printingDrawPage(void)
 {
   //	Scroll_CreatePara(&titleScroll, infoFile.title,&titleRect);  //
+
   if(get_Pre_Icon() == true){
     key_pause = 5;
     //printingItems.items[key_pause - 1] = itemBlank;
@@ -698,6 +703,10 @@ void abortPrinting(void)
     case TFT_UDISK:
     case TFT_SD:
       clearCmdQueue();
+      for(TOOL i = BED; i < HEATER_NUM; i++)
+      {
+        heatSetTargetTemp(i, 0);
+      }
       break;
   }
 
@@ -792,7 +801,7 @@ void getGcodeFromFile(void)
 
   powerFailedCache(infoPrinting.file.fptr);
 
-  if(heatHasWaiting() || infoCmd.count >= 3 || infoPrinting.pause )  return;
+  if(heatHasWaiting() || infoCmd.count || infoPrinting.pause )  return;
 
   if(moveCacheToCmd() == true) return;
 
